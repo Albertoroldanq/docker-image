@@ -1,6 +1,5 @@
 # iO Academy Docker image
 
-**If you are using an M1 chip, use [this branch](https://github.com/iO-Academy/docker-image/tree/apple-m1).**
 
 Start by creating the following directory
 
@@ -8,22 +7,30 @@ Start by creating the following directory
 ~/sites/academyServer
 ```
 
-You may need to sudo this command. Once created set the permissions for the sites directory:
+Once created set the permissions for the sites directory:
 
 ```bash
-sudo chmod -R 777 ~/sites
+chmod -R 777 ~/sites
 ```
 
-Now we need to clone this repo into that directory, run the following command from the academyServer directory
+( You may need to sudo this command: `sudo chmod -R 777 ~/sites` )
+
+Now we need to clone this repo into that directory. Run the following command from within the academyServer directory:
 
 ```bash
-git clone git@github.com:iO-Academy/docker-image.git .
+git clone https://github.com/iO-Academy/docker-image.git .
 ```
 
 Before starting docker, delete the `.git` folder to remove the connection with Github:
 
 ```bash
 rm -rf .git
+```
+
+Now you should run the install script. This is not something you would ordinarily need to do when setting up a docker image. This is a tool we have created to make running programs installed inside of docker easier.
+
+```bash
+./install.sh
 ```
 
 You can now turn the image on by running:
@@ -35,7 +42,7 @@ docker-compose up
 This will take a minute or two to run, once done it should finish on something that looks like the below:
 
 ```
-mongo_1     | Version: ...
+academy-mysql  | Version: ...MariaDB...
 ```
 
 You should now be able to load [http://localhost:1234](http://localhost:1234) in your browser and see a success page.
@@ -48,9 +55,9 @@ To run your docker image in the background you can run:
 docker-compose up --detach
 ```
 
-This should boot 3 containers and run your image in the background.
+This should boot 5 containers and run your image in the background.
 
-Now that your docker containers are running in the background, you may want to set docker to start upon login. You can do this by ticking `Docker Preferences > General > Start Docker Desktop when you login`
+Now that your docker containers are running in the background, you may want to set docker to start upon login. You can do this by ticking `Docker Settings (cog) > General > Start Docker Desktop when you login`
 
 You can now put all your application files in:
 ```

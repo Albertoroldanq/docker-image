@@ -5,25 +5,29 @@ services:
     build:
       context: ./build/php
       dockerfile: Dockerfile
+    container_name: academy-php
     volumes:
       - ./html:/var/www/html
       - ./logs:/logs
       - ./build/php/site.ini:/usr/local/etc/php/conf.d/site.ini
-    restart: unless-stopped
- 
-  db:
-    image: mysql:5.7
     ports:
-      - 127.0.0.1:3306:3306
-    volumes:
-      - ./db:/var/lib/mysql
+      - "8080:8080"
+    restart: unless-stopped
+
+  db:
+    image: mariadb
+    restart: unless-stopped
+    container_name: academy-mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
-    restart: unless-stopped
+    volumes:
+      - ./db:/var/lib/mysql
+    ports:
+      - 3306:3306
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: pma
+    container_name: academy-pma
     links:
       - db
     environment:
@@ -36,7 +40,8 @@ services:
 
 
   mongodb:
-    image: mongo:4.2.8
+    image: mongo:6.0
+    container_name: academy-mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -50,6 +55,7 @@ services:
     build:
       context: ./build/nginx
       dockerfile: Dockerfile
+    container_name: academy-nginx
     volumes:
       - ./html:/var/www/html
       - ./logs:/logs
